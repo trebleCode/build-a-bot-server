@@ -1,7 +1,12 @@
 const path = require('path')
 const express = require("express");
 
+// use this to handle deep linking on the server
+const history = require('connect-history-api-fallback');
+
 const app = express();
+
+app.use(history({index: '/index.html'}));
 
 app.get('/api/parts', (req, res) =>
   res.send({
@@ -175,5 +180,6 @@ app.post('/api/sign-in', (req, res) => res.status(200).send());
 
 app.use('/api/images', express.static('images'));
 
-app.listen(8081, () => console.log('Server listening on port 8081!'));
+app.use('/', express.static('dist', { index: 'index.html' }));
 
+app.listen(8081, () => console.log('Server listening on port 8081!'));
